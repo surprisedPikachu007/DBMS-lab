@@ -34,3 +34,13 @@ b. Update the interest with 1% when Accbal of the Custid >50% of Loan Amount
 
 c. Create a View with Accbal and Loan Amount of all Customers
     create view view_Accbal_LoanAmount as select Accbal, Amount from Account, Loan where Account.Custid = Loan.Custid;
+
+d. Create a trigger which checks for minimum balance in the account.
+    create or replace trigger check_min_bal on insert or update on Account
+    begin
+        if: new.Accbal < 2000.00 then
+            raise_application_error(-20000, 'Minimum balance of 2000.00 is required');
+        end if;
+    end;
+    
+    

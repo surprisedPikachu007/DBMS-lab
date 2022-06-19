@@ -26,18 +26,19 @@ c) Display the Employee name and the respective department manager name.
     select Empname, DeptmanagerId from Employee, Dept where Employee.Deptno = Dept.Deptno;
 
 d) Create a function to return the salary of the employee when Empid is given as input parameter. Handle Exceptions.
-    create or replace procedure dispsal(nu number)
-    is
-    cursor emp_cur is
-    select sal from employee where employee.deptno = nu;
-    emp_rec emp_cur%rowtype;
+    create or replace function get_salary(pid number) 
+    return number as
+    n number;
     begin
-    for emp_rec in emp_cur
-    loop
-    dbms_output.put_line(emp_rec.sal);
-    end loop;
+        select sal into n from employee where Empid = pid;
+        return n;
     end;
     /
 
-    set serveroutput on;
-    execute dispsal(10);
+    declare
+        n number;
+        begin
+        n:= get_salary(1);
+        dbms_output.put_line(n);
+    end;
+    /

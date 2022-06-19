@@ -1,0 +1,24 @@
+User (Userid, Name, Dept, Bookid, Accdate)
+Book (Bookid, Book_name, Author, Publication, Price) 
+
+    create table Book (
+        Bookid number primary key,
+        Book_name varchar(50),
+        Author varchar(50),
+        Publication varchar(50),
+        Price number,
+    );
+
+    create table User4 (
+        Userid number primary key,
+        Username varchar(20),
+        Dept varchar(20),
+        Bookid number references Book(Bookid),
+        Accdate date
+    );
+
+data population
+    insert into Book values (1, 'C++', 'K.N.K', 'McGraw-Hill', 500);
+    insert into Book values (2, 'C', 'Bjourne straustoup', 'Flourish & Botts', 400);
+    insert into Book values (3, 'Java', 'James Gosling', 'Wiley', 500);
+    insert into Book values (4, 'Python', Guido van Rossum', 'Wiley', 500);

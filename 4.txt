@@ -10,15 +10,33 @@ Book (Bookid, Book_name, Author, Publication, Price)
     );
 
     create table User4 (
-        Userid number primary key,
+        Userid number,
         Username varchar(20),
         Dept varchar(20),
         Bookid number references Book(Bookid),
-        Accdate date
+        Accdate date,
+        primary key (Userid, Bookid)
     );
 
 data population
     insert into Book values (1, 'C++', 'K.N.K', 'McGraw-Hill', 500);
     insert into Book values (2, 'C', 'Bjourne straustoup', 'Flourish & Botts', 400);
-    insert into Book values (3, 'Java', 'James Gosling', 'Wiley', 500);
-    insert into Book values (4, 'Python', Guido van Rossum', 'Wiley', 500);
+    insert into Book values (3, 'Java', 'James Gosling', 'Wiley', 800);
+    insert into Book values (4, 'Python', 'Guido van Rossum', 'Wiley', 1500);
+    insert into Book values (5, 'PHP', 'Rasmus Lerdorf', 'McGraw-Hill', 1000);
+    insert into Book values (6, 'Ruby', 'Yukihiro Matsumoto', 'Barnes and noble', 150);
+
+    insert into User4 values (1, 'John', 'IT', 1, '01-JAN-2020');
+    insert into User4 values (2, 'Mary', 'CSE', 2, '22-MAR-2020');
+    insert into User4 values (3, 'Peter', 'IT', 3, '14-FEB-2020');
+    insert into User4 values (4, 'Sara', 'EEE', 4, '12-DEC-2020');
+    insert into User4 values (1, 'John', 'IT', 5, '01-JAN-2020');
+    insert into User4 values (4, 'Sara', 'CSE', 6, '22-MAR-2020');
+
+a) List the name of the user who had accessed the costliest book.
+
+b) List the userid and count of books accessed by the user.
+    select userid , count(*) as count from User4 group by userid;
+
+c) List the books published by Wiley publisher.
+    select * from Book where Publication = 'Wiley';

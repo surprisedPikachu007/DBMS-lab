@@ -1,0 +1,43 @@
+Employee (EmpId, Empname, Sal, Deptno) 
+Dept (Deptno, Dname, Loc,DeptmanagerId) 
+
+    create table Employee (EmpId number primary key, Empname varchar(20), Sal number, Deptno number);
+    create table Dept (Deptno number primary key, Dname varchar(20), Loc varchar(20), DeptmanagerId number);
+
+data population
+    insert into Employee values (1, 'John', 20000, 10);
+    insert into Employee values (2, 'Smith', 35000, 20);
+    insert into Employee values (3, 'David', 45000, 10);
+    insert into Employee values (4, 'Peter', 50000, 20);
+    insert into Employee values (5, 'James', 30000, 10);
+    insert into Employee values (6, 'John', 40000, 30);
+
+    insert into Dept values (10, 'IT', 'Bangalore', 1);
+    insert into Dept values (20, 'HR', 'Chennai', 2);
+    insert into Dept values (30, 'Admin', 'Pune', 3);
+
+a) List the count of Employees and average salary of each department.
+    select count(*) as count , avg(sal) as average from employee;
+
+b) List the employee name, department name and the salary of all the employees.
+    select Empname, Dname, Sal from Employee, Dept where Employee.Deptno = Dept.Deptno; 
+
+c) Display the Employee name and the respective department manager name.
+    select Empname, DeptmanagerId from Employee, Dept where Employee.Deptno = Dept.Deptno;
+
+d) Create a function to return the salary of the employee when Empid is given as input parameter. Handle Exceptions.
+    create or replace procedure dispsal(nu number)
+    is
+    cursor emp_cur is
+    select sal from employee where employee.deptno = nu;
+    emp_rec emp_cur%rowtype;
+    begin
+    for emp_rec in emp_cur
+    loop
+    dbms_output.put_line(emp_rec.sal);
+    end loop;
+    end;
+    /
+
+    set serveroutput on;
+    execute dispsal(10);

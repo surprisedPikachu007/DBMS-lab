@@ -38,12 +38,24 @@ c) Display the Boothid, Location and count of voters voted.(checkvote = 1)
 d) Write a function to return the percentage of poll in a booth when boothid is given as input. Handle Exceptions.
     create or replace function get_poll_percentage(bid number)
     return number is
+    
     n number(4,2);
     t number;
+    invalid_boothid_error exception;
+    
     begin
+        if(bid<1 or bid>3) then
+            RAISE invalid_boothid_error;
+        end if;
+
         select count(*) into n from voter where boothid = bid and checkvote = 1;
         select count(*) into t from voter where boothid = bid;
         return n/t * 100;
+
+    exception
+    when invalid_boothid_error then
+        dbms_output.put_line('Invalid Boothid');
+
     end;
     /  
 

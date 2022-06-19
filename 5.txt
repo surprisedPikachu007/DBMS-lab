@@ -1,0 +1,36 @@
+Customer (Custid, Custname, Addr, phno,panno)
+Loan (Loanid, Amount, Interest, Custid)
+Account (Acctno, Accbal, Custid)
+
+    create table Customer (Custid number primary key, Custname varchar2(20), Addr varchar2(50), phno number, panno varchar2(10));
+    create table Loan (Loanid number primary key, Amount number(20,2), Interest number(3,2), Custid number references Customer(Custid));
+    create table Account (Acctno number primary key, Accbal number(20,2), Custid number references Customer(Custid));
+
+data population
+    insert into Customer values (1, 'Arun', '123 Main St', 1234567890, 'ABCD1234');
+    insert into Customer values (2, 'Suresh', '456 Main St', 987654321, 'ABCD1235');
+    insert into Customer values (3, 'Rajesh', '789 Main St', 9876543210, 'ABCD1236');
+    insert into Customer values (4, 'Suresh', '654 Main St', 987654321, 'ABCD1237');
+    insert into Customer values (5, 'Rajesh', '789 Main St', 9876543210, 'ABCD1238');
+    insert into Customer values (6, 'Ram', '564 Main St', 987654321, 'ABCD1239');
+
+    insert into Loan values (1, 10000.00, 6.00, 1);
+    insert into Loan values (2, 120000.00, 5.70, 4);
+    insert into Loan values (3, 50000.00, 6.50, 5);
+    insert into Loan values (4, 100000.00, 6.00, 3);
+
+    insert into Account values (1, 15000.00, 1);
+    insert into Account values (2, 40000.00, 2);
+    insert into Account values (3, 50000.00, 3);
+    insert into Account values (4, 100000.00, 4);
+    insert into Account values (5, 75000.00, 5);
+    insert into Account values (6, 100000.00, 6);
+
+a. Display the Account balance amount of a particular customer “ARUN”
+    select Accbal from Account where Custid = (select Custid from Customer where Custname = 'Arun');
+
+b. Update the interest with 1% when Accbal of the Custid >50% of Loan Amount
+    update Account set Accbal = Accbal + (Accbal * 0.01) where Accbal > (select Amount * 0.5 from Loan where Account.Custid = Loan.Custid);
+
+c. Create a View with Accbal and Loan Amount of all Customers
+    create view view_Accbal_LoanAmount as select Accbal, Amount from Account, Loan where Account.Custid = Loan.Custid;

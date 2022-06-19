@@ -1,0 +1,65 @@
+creation of table
+
+    create table customer(custid number, custname varchar(30), age number, phoneno number)
+
+    create table loan(loanid number, amount number(20,2), custid number, emi number)
+
+adding primary key
+
+    alter table customer add primary key (custid)
+
+adding foreign key
+
+    alter table loan add constraint custidfk foreign key(custid) references customer(custid)
+
+data population
+
+
+    insert into customer values(1,'arun',19,9842492541)
+
+    insert into customer values(2,'ram',18,9842492542)
+
+    insert into customer values(3,'muthu',19,9842492543)
+
+    insert into customer values(4,'deepak',18,9842492544)
+
+    insert into customer values(5,'gautham',20,9842492545)
+
+    insert into customer values(6,'sai',19,9842492546)
+
+
+
+
+    insert into loan values(101,50000.00,1,500)
+
+    insert into loan values(102,40000.00,2,500)
+
+    insert into loan values(103,100000.00,3,1000)
+
+    insert into loan values(105,60000.00,5,900)
+
+a) List the name of the customers who have taken loan for more than Rs.50,000.
+    select custname from customer where custid in (select custid from loan where amount > 50000.00);
+
+b) List the Customer id of those who have no loan.
+    select custid from customer where custid not in (select custid from loan);
+
+c) List the total count of loan availed.
+    select count(*) from loan;
+
+d) Create a procedure to print the Amount and Custid when the Loanid is given as input. Handle Exceptions.
+    CREATE OR REPLACE PROCEDURE disp(pID IN Loan.Loanid%type)
+    IS
+    CURSOR emp_cur is
+    Select custid, amount from Loan where Loanid = pID;
+    emp_rec emp_cur%rowtype;
+    BEGIN
+    FOR emp_rec in emp_cur
+    LOOP
+    dbms_output.put_line(emp_rec.custid ||' '|| emp_rec.amount);
+    END LOOP;
+    END;
+    /
+
+    set serveroutput on
+    execute disp(2);

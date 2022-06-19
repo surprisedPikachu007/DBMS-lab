@@ -1,0 +1,56 @@
+Voter (VoterId, Votername, Gender, Boothid,Checkvote) 
+    checkvote  is 1(voted) or 0 (not voted) 
+Booth (Boothid, Location,BIncharge ) 
+
+    create table Voter(VoterId number, Votername varchar(20), Gender varchar(20), Boothid number, Checkvote number);
+    alter table voter add check (checkvote = 0 or checkvote = 1);
+
+    create table Booth(Boothid number, Loc varchar(20), BIncharge varchar(20));
+    alter table booth add primary key (Boothid);
+
+    alter table voter add constraint fk_boothid foreign key (Boothid) references booth(Boothid);
+
+data population
+    insert into Booth values(1,'Chennai','Thennavan');
+    insert into Booth values(2,'Coimbatore','Sagayam');
+    insert into Booth values(3,'Thiruppur','Subramaniyam');
+
+    insert into Voter values(1,'John','Male',1,1);
+    insert into Voter values(2,'Rachel','Female',1,0);
+    insert into Voter values(3,'El','Female',2,1);
+    insert into Voter values(4,'Rose','Female',2,0);
+    insert into Voter values(5,'John','Male',2,1);
+    insert into Voter values(6,'James','Male',3,1);
+
+a) 
+    (i)List the count of voters in each Booth 
+        select count(*) as count, Boothid from voter group by Boothid;    
+
+    (ii)   List the count of Male voters voted.
+        select count(*) as Male_Count from voter where Gender = 'Male';
+
+b) Display the overall count of voters voted in the election.
+    select count(*) as Total_Count from voter;
+
+c) Display the Boothid, Location and count of voters voted.(checkvote = 1)
+    select Booth.Boothid, Booth.Loc, count(*) as Count from voter, Booth where voter.Boothid = Booth.Boothid and voter.checkvote = 1 group by Booth.Boothid, Booth.Loc;
+
+d) Write a function to return the percentage of poll in a booth when boothid is given as input. Handle Exceptions.
+    create or replace function get_poll_percentage(bid number)
+    return number is
+    n number(4,2);
+    t number;
+    begin
+        select count(*) into n from voter where boothid = bid and checkvote = 1;
+        select count(*) into t from voter where boothid = bid;
+        return n/t * 100;
+    end;
+    /  
+
+    declare
+    a number(4,2);
+    begin
+    a := get_poll_percentage(2);
+    dbms_output.put_line(a);
+    end;
+    /

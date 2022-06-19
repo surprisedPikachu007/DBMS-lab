@@ -1,0 +1,15 @@
+Marks(Regno,Name , Dept, Subj1,Subj2,Subj3)
+
+a) Add a column Total in student table and update the Total field with the sum of 3 subject Marks.
+    alter table student add (total number);
+    update student set total = Subj1 + Subj2 + Subj3;
+
+b) Find the second maximum total in the table.
+    create table newtable as 
+    select * from student 
+    where total < (select max(total) from student);
+
+    select * from newtable where total = (select max(total) from newtable);
+
+c) Display the name of the student with maximum total.
+    select name from student where total = (select max(total) from student);

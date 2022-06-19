@@ -1,0 +1,8 @@
+Product (Prodid, Prodesc, Price, Stock)
+Sales (Salesid, Prodid, qty)
+
+a) Add a column reorder in Product table having value 50 for all products.
+    alter table Product add column (reorder number default 50);
+
+b) Create a Login form to validate a user.
+    

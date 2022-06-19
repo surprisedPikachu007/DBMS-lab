@@ -1,0 +1,45 @@
+Customer (Custid, Custname, phno,pan,DOB)
+HomeLoan (HLoanid, Amount, Custid)
+VehicleLoan (VLoanid, Amount, Custid)
+
+    create table Customer(Custid number, Custname varchar2(20), phno number, pan varchar2(10), DOB date);
+    create table HomeLoan(HLoanid number, Amount number(20,2), Custid number);
+    create table VehicleLoan(VLoanid number, Amount number(20,2), Custid number);
+
+data population
+    insert into Customer values(1,'Raj',123456789,'A123456789','01-JAN-2000');
+    insert into Customer values(2,'Sai',234567891,'A234567891','01-JAN-2004');
+    insert into Customer values(3,'Ram',345678912,'A345678912','01-JAN-2000');
+    insert into Customer values(4,'Shyam',456789123,'A456789123','01-JAN-2001');
+    insert into Customer values(5,'Lakshman',567891234,'A567891234','01-JAN-2002');
+    insert into Customer values(6,'Siva',678912345,'A678912345','01-JAN-2003');
+
+    insert into HomeLoan values(2,20000.00,2);
+    insert into HomeLoan values(3,30000.00,3);
+    insert into HomeLoan values(4,40000.00,4);
+    insert into HomeLoan values(6,60000.00,6);
+
+    insert into VehicleLoan values(3,30000.00,3);
+    insert into VehicleLoan values(4,40000.00,4);
+    insert into VehicleLoan values(5,50000.00,5);
+
+a) List the Custid of the customers who have both homeloan and vehicle loan.
+    select custid from customer where custid in (select custid from homeloan intersect select custid from vehicleloan);
+
+b) List the Custid of the customers who donot have any loan.
+    select custid from customer where custid not in (select custid from homeloan union select custid from vehicleloan);
+    
+c) Create a view with customerid, Customer name and total loan amount (HomeLoan and VehicleLoan)
+
+d) Write a trigger which displays the Homeloan details whenever the values are inserted in the respective table.
+    create or replace procedure display_homeloan_details(pid number)
+    as
+    begin
+        for i in (select * from homeloan)
+        loop
+        dbms_output.put_line(i.hloanid||' '||i.amount||' '||i.custid);
+        end loop;
+    end;
+
+    declare
+    begin

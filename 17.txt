@@ -1,0 +1,23 @@
+(a) Create a table Student (Regno, name , Mark) and insert records. Write a PL/SQL function to
+print the grade of the Student. Obtain student mark as input from the main program. Check for
+the following condition: if the input mark ranges 91-100 then Grade A, 81-90 then Grade B, 71-
+80 then Grade C, 60-70 then Grade D and <60 Grade E.
+
+create or replace function grade_calculator(mark number)
+return varchar2 is
+grade varchar2(1);
+begin
+if (mark > 90) then
+grade := 'A';
+return grade;
+else
+return 'E';
+end if;
+end;
+
+declare
+a varchar2(1);
+begin
+a := grade_calculator(90);
+dbms_output.put_line(a);
+end;

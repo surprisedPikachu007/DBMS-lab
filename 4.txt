@@ -34,6 +34,7 @@ data population
     insert into User4 values (4, 'Sara', 'CSE', 6, '22-MAR-2020');
 
 a) List the name of the user who had accessed the costliest book.
+select Username from User4 where Bookid=(select Bookid from Book where Price=(select MAX(Price) from Book));
 
 b) List the userid and count of books accessed by the user.
     select userid , count(*) as count from User4 group by userid;
